@@ -735,6 +735,7 @@ hr {
   font-size:10px;
 }
 
+/*
 #sbc #serverscore { display:block; }
 #sbc #serveruser  { display:none;  }
 #sbc:hover #serverscore { display:none; }
@@ -744,4 +745,7 @@ hr {
 .server-best-container>#serveruser { display:none; }
 .server-best-container:hover>#serverscore { display:none; }
 .server-best-container:hover>#serveruser { display:block; }
+*/
 
+#sbc #serverscore { display:inline; }
+#sbc #serveruser  { display:inline;  }

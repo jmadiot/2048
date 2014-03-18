@@ -37,8 +37,10 @@ if(isset($_SESSION['user'])){$user=$_SESSION['user'];} else {$user=NULL;}
         <div class="server-best-container" id="sbc"
           onclick="javascript:get_scores()">
           <div>
-            <span id='serverscore'>-</span>
-            <span id='serveruser'>-</span>
+<!--            <span id='serverscore'>-</span>
+            <span id='serveruser'>-</span>-->
+            <span id='serverscore'>?</span>
+            (<span id='serveruser'>?</span>)
           </div>
         </div>
         <div class="stop_replay" id="stop_replay_div" onclick="javascript:stop_replay();">
