@@ -81,8 +81,39 @@ var get_scores = function() {
   return false;
 }
 
-// send score
+var table64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+var string_of_moves = function(moves) {
+  while(moves.length%3) moves.push(0);
+  n=moves.length;
+  r = "";
+  for(i=0;i+2<n;i+=3) {
+    s=0;
+    for(j=0;j<3;j++) s=s*4+(moves[i+j]%4);
+    r += table64[s];
+  }
+  return r;
+}
+
+var moves_of_string = function(s) {
+  v=[];
+  for(i=0;i<s.length;i++) {
+    k=table64.indexOf(s[i]);
+    v.push(k/16%4|0, k/4%4|0, k%4);
+  }
+  return v;
+}
+
+// send score and moves
 var send_score = function(score) {
+  params = "score="+score+"&moves="+string_of_moves(spythis.moves);
+  req("send_score", params);
+  window.setTimeout("get_highscore()", 1000);
+  return false;
+}
+
+// send score // DEPRECATED
+var send_score_old = function(score) {
   var a = req("send_score", "score="+score);
   window.setTimeout("get_highscore()", 1000);
   return false;
@@ -104,8 +135,41 @@ GameManager.prototype.score_upload = function (score, maxtile) {
   send_score(score);
 }
 
+// Replay old game
+var replay_in_progress = [];
+var replay_id = 0;
+var replay = function(moves) {
+  moves = moves_of_string(moves);
+  if(moves.length>10) {
+    spythis.restart();
+    moves.reverse();
+    replay_in_progress = moves;
+    next_replay();
+  }
+  document.getElementById('stop_replay').style['visibility']='visible';
+}
+var next_replay = function() {
+  if(replay_in_progress.length>0) {
+    spythis.move(replay_in_progress.pop());
+  }
+  replay_id = window.setTimeout(next_replay,100)
+}
+var stop_replay = function() {
+  if(replay_id) {
+    window.clearTimeout(replay_id); replay_id=0;
+    //document.getElementById('stop_replay').style['visibility']='hidden';
+    document.getElementById('stop_replay').innerHTML = 'restart';
+  } else {
+    document.getElementById('stop_replay').innerHTML = 'stop';
+    next_replay();
+  }
+}
+
+
 // Restart the game
 GameManager.prototype.restart = function () {
+  spythis.actuator.messageContainer.classList.remove("game-won");
+  spythis.actuator.messageContainer.classList.remove("game-over");
   this.actuator.restart();
   this.setup();
 };
@@ -117,6 +181,10 @@ GameManager.prototype.setup = function () {
   this.score        = 0;
   this.over         = false;
   this.won          = false;
+  
+  // log of moves
+  this.moves = [];
+  this.logmove = function(d) { this.moves.push(d); }
 
   // Add the initial tiles
   //this.addStartTiles();
@@ -248,6 +316,7 @@ GameManager.prototype.move = function (direction) {
   if (moved) {
     //this.addRandomTile();
     this.addEasyTile();
+    this.logmove(direction);
 
     if (!this.movesAvailable()) {
       this.over = true; // Game over!
@@ -446,7 +515,7 @@ function HTMLActuator() {
 
 HTMLActuator.prototype.actuate = function (grid, metadata) {
   var self = this;
-
+  
   window.requestAnimationFrame(function () {
     self.clearContainer(self.tileContainer);
 
