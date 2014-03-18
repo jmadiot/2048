@@ -30,7 +30,7 @@ if(isset($_SESSION['user'])){$user=$_SESSION['user'];} else {$user=NULL;}
   <pre id="scoreboard"></pre>
   <div class="container">
     <div class="heading">
-      <h1 class="title">65536D</h1>
+      <!--<h1 class="title">65536D</h1>-->
       <div class="scores-container">
         <div class="score-container">0</div>
         <div class="best-container">0</div>
@@ -44,16 +44,16 @@ if(isset($_SESSION['user'])){$user=$_SESSION['user'];} else {$user=NULL;}
       </div>
 
     </div>
-    <p class="game-intro">Join the numbers and get to the <strong>65536 tile!</strong></p>
+    <!--<p class="game-intro">Join the numbers and get to the <strong>65536 tile!</strong></p>-->
     <p>
       Your username:
-      <a href="javascript:set_user();">
+      <a href="#" onclick="javascript:set_user()">
       <span id="user">
         <?php
           if($user!=NULL) {
             echo $user;
           } else { ?>
-            You don't have one, set one up? You'll keep your game.
+            set it up! You'll keep your game.
           <?php }
         ?>
         </span>
@@ -104,7 +104,7 @@ if(isset($_SESSION['user'])){$user=$_SESSION['user'];} else {$user=NULL;}
 
       </div>
     </div>
-
+<!--
     <p class="game-explanation">
 
       <strong class="important">How to play:</strong> Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
@@ -115,7 +115,7 @@ if(isset($_SESSION['user'])){$user=$_SESSION['user'];} else {$user=NULL;}
 
     </p>
   </div>
-
+-->
   <script src="script.js"></script>
 
 </body>

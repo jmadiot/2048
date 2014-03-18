@@ -16,7 +16,7 @@ if($command == 'setuser') {
   if(isset($_POST['user'])) {
     $_SESSION['user'] = $_POST['user'];
     $user = $_SESSION['user'];
-    answer("ok, user changed to '$user'");
+    die("ok, user changed to '$user'");
   } else {
     die("error, username unreadable");
   }
@@ -56,6 +56,7 @@ if($command == 'send_score' && isset($_POST['score'])) {
   $f = fopen($filename, "a") or die("failed to open file for writing");
   fwrite($f, "$score:$user\n");
   fclose($f);
+  die("added score $score for $user");
 }
 
 ?>

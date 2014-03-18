@@ -50,11 +50,12 @@ var req = function(command, data) {
   r.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   r.send(data);
   var a = r.responseText;
-  document.getElementById('debugpre').innerHTML="responseText=<<"+a+">>";
+  document.getElementById('debugpre').innerHTML="responseText=["+a+"]\n\n"
+    +document.getElementById('debugpre').innerHTML;
   return a;
 }
 
-// DEBUUUUG
+// DEBUG
 var debug = function() {
   var a = req("debug", "")
   return false;
