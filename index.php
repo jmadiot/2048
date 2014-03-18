@@ -41,7 +41,9 @@ if(isset($_SESSION['user'])){$user=$_SESSION['user'];} else {$user=NULL;}
             <span id='serveruser'>-</span>
           </div>
         </div>
-        <div id="stop_replay" class="stop_replay" onclick="javascript:stop_replay();">stop</div>
+        <div class="stop_replay" onclick="javascript:stop_replay();">
+        <span id="stop_replay">stop</span>
+        </div>
       </div>
 
     </div>

@@ -49,7 +49,11 @@ if($command == 'get_highscore' || $command == 'get_scores') {
       $score = $b[0];
       if(!in_array($user, $users)) {
         $users[] = $user;
-        echo "<a href='#' onclick=\"javascript:replay('$b[2]');\">$b[1] : $b[0]</a>\n";
+        if(strlen($b[2])<=2) {
+          echo "$b[1] : $b[0]\n";
+        } else {
+          echo "<a href='#' onclick=\"javascript:replay('$b[2]');\">$b[1] : $b[0]</a>\n";
+        }
       }
     }
   };

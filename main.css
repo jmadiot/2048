@@ -71,7 +71,6 @@ h1.title {
   margin-top: 8px;
   text-align: center; }
 
-.stop_replay{padding-bottom:28px;padding-top:2px; visibility:hidden;}
 
   .score-container:after, .best-container:after, .server-best-container:after {
     position: absolute;
@@ -82,7 +81,13 @@ h1.title {
     font-size: 13px;
     line-height: 13px;
     text-align: center;
-    color: #eee4da; }
+    color: #eee4da;
+  }
+
+.stop_replay{ visibility:hidden;}
+#stop_replay { position:relative; top:-10px; }
+
+
   .score-container .score-addition,
   .best-container .score-addition,
   .server-best-container  .score-addition

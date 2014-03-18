@@ -144,9 +144,9 @@ var replay = function(moves) {
     spythis.restart();
     moves.reverse();
     replay_in_progress = moves;
+    document.getElementById('stop_replay').style['visibility']='visible';
     next_replay();
   }
-  document.getElementById('stop_replay').style['visibility']='visible';
 }
 var next_replay = function() {
   if(replay_in_progress.length>0) {
@@ -158,7 +158,7 @@ var stop_replay = function() {
   if(replay_id) {
     window.clearTimeout(replay_id); replay_id=0;
     //document.getElementById('stop_replay').style['visibility']='hidden';
-    document.getElementById('stop_replay').innerHTML = 'restart';
+    document.getElementById('stop_replay').innerHTML = 'resume';
   } else {
     document.getElementById('stop_replay').innerHTML = 'stop';
     next_replay();
