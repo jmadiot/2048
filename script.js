@@ -106,9 +106,11 @@ var moves_of_string = function(s) {
 
 // send score and moves
 var send_score = function(score) {
-  params = "score="+score+"&moves="+string_of_moves(spythis.moves);
-  req("send_score", params);
-  window.setTimeout("get_highscore()", 1000);
+  if(!replayed) {
+    params = "score="+score+"&moves="+string_of_moves(spythis.moves);
+    req("send_score", params);
+    window.setTimeout("get_highscore()", 1000);
+  }
   return false;
 }
 
@@ -138,30 +140,36 @@ GameManager.prototype.score_upload = function (score, maxtile) {
 // Replay old game
 var replay_in_progress = [];
 var replay_id = 0;
+var replayed = false;
 var replay = function(moves) {
   moves = moves_of_string(moves);
   if(moves.length>10) {
     spythis.restart();
     moves.reverse();
     replay_in_progress = moves;
-    document.getElementById('stop_replay').style['visibility']='visible';
+    document.getElementById('stop_replay_div').style['visibility']='visible';
     next_replay();
+    replayed = true;
   }
 }
+var replay_period = 150;
 var next_replay = function() {
+  replayed = true;
   if(replay_in_progress.length>0) {
     spythis.move(replay_in_progress.pop());
+    replay_id = window.setTimeout(next_replay, replay_period);
   }
-  replay_id = window.setTimeout(next_replay,100)
 }
 var stop_replay = function() {
   if(replay_id) {
     window.clearTimeout(replay_id); replay_id=0;
     //document.getElementById('stop_replay').style['visibility']='hidden';
     document.getElementById('stop_replay').innerHTML = 'resume';
+    replayed = false;
   } else {
     document.getElementById('stop_replay').innerHTML = 'stop';
     next_replay();
+    replayed = true;
   }
 }
 
