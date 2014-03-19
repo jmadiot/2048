@@ -81,7 +81,7 @@ var get_scores = function() {
   return false;
 }
 
-var table64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+var table64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-/";
 
 var string_of_moves = function(moves) {
   while(moves.length%3) moves.push(0);
@@ -104,10 +104,19 @@ var moves_of_string = function(s) {
   return v;
 }
 
+var username = "anon";
+
 // send score and moves
 var send_score = function(score) {
   if(!replayed) {
+    if(username=="anon") {
+      user = prompt("Nice one!  Specify a username?", "batman");
+      if(user!==null && user!="") {
+        username=user;
+      }
+    }
     params = "score="+score+"&moves="+string_of_moves(spythis.moves);
+    if(username!="anon") { params += "&username="+username; }
     req("send_score", params);
     window.setTimeout("get_highscore()", 1000);
   }
@@ -125,6 +134,7 @@ var send_score_old = function(score) {
 var set_user = function() {
   var user = prompt("Go ahead, you can choose 'batman'.", "batman");
   if(user!=null) {
+    username = user;
     document.getElementById('user').innerHTML = user;
     req("setuser", "user="+user);
   }
@@ -144,10 +154,11 @@ var replayed = false;
 var replay = function(moves) {
   moves = moves_of_string(moves);
   if(moves.length>10) {
+    document.getElementById('fasterbutton').style['display']='inline';
     spythis.restart();
     moves.reverse();
     replay_in_progress = moves;
-    document.getElementById('stop_replay_div').style['visibility']='visible';
+    document.getElementById('stop_replay_div').style['display']='inline-block';
     next_replay();
     replayed = true;
   }
@@ -163,8 +174,8 @@ var next_replay = function() {
 var stop_replay = function() {
   if(replay_id) {
     window.clearTimeout(replay_id); replay_id=0;
-    //document.getElementById('stop_replay').style['visibility']='hidden';
-    document.getElementById('stop_replay').innerHTML = 'resume';
+    //document.getElementById('stop_replay').style['display']='none';
+    document.getElementById('stop_replay').innerHTML = 'go';
     replayed = false;
   } else {
     document.getElementById('stop_replay').innerHTML = 'stop';
@@ -172,7 +183,13 @@ var stop_replay = function() {
     replayed = true;
   }
 }
-
+var faster = function() { replay_period /= 1.5;}
+var cancel_replay = function() {
+  replay_in_progress = [];
+  replay_id = 0;
+  replayed = false;
+  document.getElementById('stop_replay_div').style['display']='none';
+}
 
 // Restart the game
 GameManager.prototype.restart = function () {
@@ -233,7 +250,7 @@ GameManager.prototype.addEasyTile = function () {
 
 // Sends the updated grid to the actuator
 GameManager.prototype.actuate = function () {
-  if (this.scoreManager.get() < this.score) {
+  if (this.scoreManager.get() < this.score && !replayed) {
     this.scoreManager.set(this.score);
   }
 
@@ -690,6 +707,7 @@ KeyboardInputManager.prototype.listen = function () {
 
     if (!modifiers) {
       if (mapped !== undefined) {
+        cancel_replay();
         event.preventDefault();
         self.emit("move", mapped);
       }

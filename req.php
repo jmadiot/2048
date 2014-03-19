@@ -63,12 +63,16 @@ if($command == 'get_highscore' || $command == 'get_scores') {
 if($command == 'send_score' && isset($_POST['score'])) {
   $score = 1 * $_POST['score'];
   $user  = $_SESSION['user'];
+  if(isset($_POST['username'])) {
+    $user = $_POST['username'];
+    $_SESSION['user'] = $user;
+  }
   $moves  = $_POST['moves'];
   $f = fopen($filename, "a") or die("failed to open file for writing");
   fwrite($f, "$score:$user:$moves\n");
   fclose($f);
   var_dump($_POST);
-  die("added score $score for $user with moves $moves");
+  die("added score $score for $user");// with moves $moves");
 }
 
 ?>

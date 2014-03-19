@@ -60,9 +60,11 @@ if(isset($_SESSION['user'])){$user=$_SESSION['user'];} else {$user=NULL;}
           } else { ?>
             set it up! You'll keep your game.
           <?php }
-        ?>
-        </span>
-      </a>
+        ?></span></a>
+      
+      <span id="fasterbutton">&nbsp;
+      <a href="#" onclick="javascript:faster();">replay faster!</a>
+      </span>
     </p>
 
     <div class="game-container">

@@ -62,7 +62,7 @@ h1.title {
   display: inline-block;
   background: #bbada0;
   padding: 15px 25px;
-  font-size: 25px;
+  font-size: 20px;
   height: 25px;
   line-height: 47px;
   font-weight: bold;
@@ -84,7 +84,7 @@ h1.title {
     color: #eee4da;
   }
 
-.stop_replay{ visibility:hidden;}
+.stop_replay{ display:none;}
 #stop_replay { position:relative; top:-10px; }
 
 
@@ -749,3 +749,4 @@ hr {
 
 #sbc #serverscore { display:inline; }
 #sbc #serveruser  { display:inline;  }
+#fasterbutton { display:none; }
